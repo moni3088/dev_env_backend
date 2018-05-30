@@ -1,0 +1,40 @@
+{
+  "name": "dev_env_backend",
+  "version": "1.0.0",
+  "description": "dev_env_project_backend_nodejs_postgresql",
+  "main": "index.js",
+  "scripts": {
+    "babel-node": "babel-node --presets=es2015",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon --exec npm run babel-node -- ./index.js",
+    "build": "babel src -d dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^2.0.1",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.1.0",
+    "lodash": "^4.17.4",
+    "nodemon": "^1.12.5",
+    "pg": "^7.4.3",
+    "randomstring": "^1.1.5",
+    "rimraf": "^2.6.2",
+    "sequelize": "^4.28.0",
+    "swagger-jsdoc": "^1.9.7",
+    "swagger-ui-express": "^2.0.11"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  }
+}
