@@ -7,11 +7,11 @@ let swaggerConfig = {
         },
         basePath: '/',
         host: '',
-        schemes: ['http, https'],
+        schemes: ['http', 'https'],
         produces: ['application/json'],
         consumes: ['application/json'],
     },
-    apis: ['./src/routers/*.js'], // Path to the API docs
+    apis: ['./src/routers/**/*.js'], // Path to the API docs
 };
 
 export default swaggerConfig;

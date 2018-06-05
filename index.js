@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import Swagger from './services/swagger.service';
+import Swagger from './src/services/swagger.service';
 import cors from  'cors';
-
-import {SwaggerRoute, imageRouter} from './routers/index.routing';
+import {SwaggerRoute, imageRouter,
+    employeesRouting, jobsRouting, jobsHistoriesRouting, chemicalsRouting} from './src/routers/index.routing';
 
 let app = express();
 const port = process.env.PORT || 7777;
@@ -19,6 +19,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.use('/images', express.static('dist/assets/images/event'));
 app.use('/img', imageRouter);
+app.use('/employees', employeesRouting);
+app.use('/jobs', jobsRouting);
+app.use('/jobHistories', jobsHistoriesRouting);
+app.use('/chemicals', chemicalsRouting);
 // Swagger
 app.use('/api-docs', swagger.swaggerUi.serve, swagger.swaggerUi.setup(swagger.swaggerSpec));
 app.use('/swagger', SwaggerRoute);
