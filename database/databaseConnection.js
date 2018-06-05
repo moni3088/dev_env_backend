@@ -5,7 +5,10 @@ import sequelize from 'sequelize';
 class DbConnection{
 
     constructor(){
+        //moni linux
         this.sequelize = new sequelize ('postgres://postgres:root@localhost:5432/dev_env_db');
+        //krystian win
+        // this.sequelize = new sequelize ('postgres://postgres:root@localhost:50258/production_en');
         this.sequelize
             .authenticate()
             .then(() => {
