@@ -5,6 +5,17 @@ import  {validateToken}  from '../middleware';
 /**
  * @swagger
  * definitions:
+ *  LogInUser:
+ *      type: object
+ *      required:
+ *      - email
+ *      - password
+ *      properties:
+ *          email:
+ *              type: string
+ *          password:
+ *              type: string
+ *
  *  Employees:
  *      type: object
  *      required:
@@ -32,6 +43,8 @@ let employeesRouter = express.Router();
  *      - employees
  *      summary: add employee account
  *      parameters:
+ *          - in: header
+ *            name: x-access-token
  *          - in: body
  *            name: employee
  *            schema:
@@ -42,15 +55,50 @@ let employeesRouter = express.Router();
  *              description: ok
  *
  */
-employeesRouter.post('/signup', (req, res) =>{ //needs token
-    console.log('Employee is: ', req.body);
-    employeesController.addNewEmployee(req.body).then(employee =>{
-        res.send(employee);
-    })
-
+employeesRouter.post('/signup', validateToken, (req, res) =>{
+    // check if decode request is strict as employee.role as admin
+    // because at signup we make token out of retrieved employee
+   if(req.decoded.employee.role === 'admin'){
+       employeesController.addNewEmployee(req.body).then(employee =>{
+           res.send(employee);
+       }).catch((err)=>{
+           console.log(err);
+           res.status(404);
+           res.send('user not signed-up')
+       });
+   }else{
+       res.status(401);
+       res.send('no admin privilege');
+   }
 });
 
-
+/**
+ * @swagger
+ * /employees/login:
+ *  post:
+ *      tags:
+ *      - employees
+ *      summary: login user to account
+ *      parameters:
+ *          - in: body
+ *            name: employee
+ *            schema:
+ *              $ref: '#/definitions/LogInUser'
+ *      description: login employee into account
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+employeesRouter.post('/login', (req, res) =>{
+    employeesController.loginUser(req.body).then(response =>{
+        res.send(response);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(404);
+        res.send('could not be logged in')
+    });
+});
 
 /**
  * @swagger
@@ -65,17 +113,21 @@ employeesRouter.post('/signup', (req, res) =>{ //needs token
  *            schema:
  *              type: string
  *            required: true
- *      description: get all users
+ *      description: get all users if admin requests it
  *      responses:
  *          201:
  *              description: ok
  *
  */
-employeesRouter.get('/all', (req, res) =>{ //needs token
-    if(req.decoded.admin){
+employeesRouter.get('/all', validateToken, (req, res) =>{ //needs token
+    if(req.decoded.employee.role === 'admin'){
         employeesController.getAllEmployees().then(users =>{
             res.send(users);
-        })
+        }).catch((err)=>{
+            console.log(err);
+            res.status(404);
+            res.send('users not retrieved')
+        });
     }else{
         res.status(401);
         res.send('you are not an admin');

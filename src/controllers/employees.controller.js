@@ -1,4 +1,5 @@
 import employeeModel from '../models/employees.model';
+import jwt from 'jsonwebtoken';
 
 /**
  * Need to add a new employee only with admin privilege
@@ -13,13 +14,16 @@ class EmployeeController{
     }
 
     addNewEmployee(employee){
-        let employeeObj = new this.employeeModel(employee);
-        return employeeObj.save();
-        /*return this.hashPassword(employee.password).then((hashed)=>{
-            employee.password = hashed;
-            let employeeObj = new this.employeeModel(employee);
-            return employeeObj.save();
-        });*/
+        return new Promise ((resolve, reject) => {
+            // check if this employee already exists
+            if(this.findEmployee_byEmail(employee.email)){
+                reject(true);
+            }else{
+                let employeeObj = new this.employeeModel(employee);
+                employeeObj.save();
+                resolve(true);
+            }
+        })
     }
     getEmployeesByEmail(employee){
         return new Promise((resolve, reject)=>{
@@ -52,6 +56,27 @@ class EmployeeController{
         return this.findEmployee_byEmail(employeeId).then(employee => {
             return employee.destroy();
         })
+    }
+    loginUser(userData){
+        // return a newly created promise
+        return new Promise((resolve, reject)=>{
+            // check if there is user data which is not null or empty string
+            if(userData.email && userData.password){
+                // call on function which returns employee if it finds it
+                this.findEmployee_byEmail(userData.email).then(retrievedEmployeeData =>{
+                    // check for password match
+                    jwt.sign({employee: retrievedEmployeeData}, 'WhoMovedMyKeys', (error, token) =>{
+                        let response = {
+                            token: token,
+                            employee: retrievedEmployeeData
+                        };
+                        resolve(response);
+                    });
+                });
+            }else{
+                reject();
+            }
+        });
     }
 
     hashPassword(password){

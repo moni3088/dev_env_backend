@@ -11,11 +11,6 @@ class EmployeesModel{
     defineModel(){
         //define user model
         this.employeesModel = this.sequalize.define('employees', {
-            id: {
-                type: Sequelize.INTEGER,
-                autoIncrement: true,
-                primaryKey:true
-            },
             firstname: {
                 type: Sequelize.STRING
             },
@@ -23,7 +18,8 @@ class EmployeesModel{
               type: Sequelize.STRING
             },
             email: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                primaryKey:true
             },
             role: {
                 type: Sequelize.STRING
