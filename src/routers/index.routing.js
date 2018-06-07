@@ -3,7 +3,8 @@ import imageRouter from './images.routing';
 import employeesRouting from './APIs/employees.routing';
 import jobsRouting from './APIs/jobs.routing';
 import jobsHistoriesRouting from './APIs/jobhistories.routing';
-import  chemicalsRouting from './APIs/chemicals.routing';
+import chemicalsRouting from './APIs/chemicals.routing';
+import warehouseRouting from './APIs/warehouses.routing';
 
 export {
     SwaggerRoute,
@@ -11,5 +12,6 @@ export {
     employeesRouting,
     jobsRouting,
     jobsHistoriesRouting,
-    chemicalsRouting
+    chemicalsRouting,
+    warehouseRouting
 }
