@@ -14,6 +14,21 @@ class WarehouseController{
     getAllWarehouses(){
         return this.warehouseModel.all();
     }
+    findWarehouseById(id){
+        return this.warehouseModel.findOne({ where : {'id': id }})
+    }
+    addNewWarehouse(newWarehouse){
+        return new Promise ((resolve, reject) => {
+            // check if this warehouse already exists
+            if(this.findWarehouseById(newWarehouse.id)){
+                reject(true);
+            }else{
+                let warehouseObj = new this.warehouseModel(newWarehouse);
+                warehouseObj.save();
+                resolve(true);
+            }
+        })
+    }
 }
 const warehouseController = new WarehouseController();
 export default warehouseController;

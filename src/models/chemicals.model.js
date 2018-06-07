@@ -11,12 +11,9 @@ class ChemicalsModel{
     defineModel(){
         //define user model
         this.chemicalsModel = this.sequalize.define('chemicals', {
-            id: {
-                type: Sequelize.INTEGER,
-                primaryKey:true
-            },
             type: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                primaryKey:true
             },
             quantity:{
                 type: Sequelize.STRING
