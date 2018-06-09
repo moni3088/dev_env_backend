@@ -1,5 +1,6 @@
 import express from 'express';
 import warehouseController from '../../controllers/warehouses.controller';
+import warehouses_chemicalsController from '../../controllers/warehouses_chemicals.controller';
 import  {validateToken}  from '../middleware';
 
 /**
@@ -9,14 +10,24 @@ import  {validateToken}  from '../middleware';
  *      type: object
  *      required:
  *      - id
- *      - chemicalid
  *      - maxstorage
  *      properties:
  *          id:
  *            type: integer
- *          chemicalid:
- *              type: integer
  *          maxstorage:
+ *              type: number
+ *  Warehouses&Chemicals:
+ *      type: object
+ *      required:
+ *      - id
+ *      - warehouseid
+ *      - chemicalid
+ *      properties:
+ *          id:
+ *            type: integer
+ *          warehouseid:
+ *              type: number
+ *          chemicalid:
  *              type: number
  */
 
@@ -42,15 +53,70 @@ let warehousesRouter = express.Router();
  *
  */
 warehousesRouter.get('/all', validateToken, (req, res) =>{
-    if(req.decoded.employee.role === 'admin'){
         warehouseController.getAllWarehouses().then(warehouses => {
             res.send(warehouses);
         }).catch((err)=>{
-            console.log(err);
             res.status(404);
-            res.send('warehouses not retrieved')
+            res.send(err)
         });
-    }
+});
+/**
+ * @swagger
+ * /warehouses/{id}:
+ *  get:
+ *      tags:
+ *      - warehouses
+ *      summary: get warehouse by id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *            required: true
+ *      description: get all warehouses if there is a token no matter the role
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+warehousesRouter.get('/:id', validateToken, (req, res) =>{
+    warehouseController.findWarehouseById(req.params.id).then(warehouse => {
+        res.send(warehouse);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err)
+    });
+});
+/**
+ * @swagger
+ * /warehouses/{warehouseid}:
+ *  get:
+ *      tags:
+ *      - warehouses
+ *      summary: get warehouse by warehouseid
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *            required: true
+ *      description: get all warehouses if there is a token no matter the role
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+warehousesRouter.get('/:warehouseid', validateToken, (req, res) =>{
+    warehouseController.getAllChemicals_byWarehouseId(req.params.id).then(warehouse => {
+        res.send(warehouse);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err)
+    });
 });
 /**
  * @swagger
@@ -73,7 +139,7 @@ warehousesRouter.get('/all', validateToken, (req, res) =>{
  *
  */
 warehousesRouter.post('/add', validateToken, (req, res) =>{
-    if(req.decoded.employee.role === 'admin'){
+    if(req.decoded.role === 'admin'){
         console.log('Warehouse is: ', req.body);
         warehouseController.addNewWarehouse(req.body).then(warehouses => {
             res.send(warehouses);
@@ -89,44 +155,66 @@ warehousesRouter.post('/add', validateToken, (req, res) =>{
 
 
 
+
 /**
  * @swagger
- * /warehouses/{chemicalId}:
- *  put:
+ * /warehouses/{warehouseid}:
+ *  get:
  *      tags:
- *      - booking admin
- *      summary: edit a particular booking
- *      description: As admin, edit/update the transaction status of a particular booking
+ *      - warehouses&chemicals
+ *      summary: get chemicals from one warehouse
  *      parameters:
- *      - in: header
- *        name: x-access-token
- *        required: true
- *      - in: path
- *        name: bookingId
- *        required: true
- *      - in: body
- *        name: body
- *        required: true
- *        schema:
- *          $ref: '#/definitions/BookingStatusUpdate'
+ *          - in: path
+ *            name: id
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *            required: true
+ *      description: get all chemicals that are currently in a warehouse based on the id of teh warehouse
  *      responses:
- *          200:
+ *          201:
  *              description: ok
  *
  */
-warehousesRouter.put('/:chemicalId',validateToken, (req,res)=>{
-    if(req.decoded.admin){
-       /* warehouseController.updateBookingStatus(req).then(response => {
-            res.send(response);
-        }).catch(()=>{
-            res.status(404);
-            res.send('no event to update');
-        });*/
-    }else{
-        res.status(401);
-        res.send('You are not authorized as admin');
-    }
+warehousesRouter.get('/:warehouseid', (req, res) =>{
+    warehouses_chemicalsController.getAllChemicals_byWarehouseId(req.params.id).then(chemical => {
+        res.send(chemical);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err)
+    });
 });
+/**
+ * @swagger
+ * /warehouses/{chemicalid}:
+ *  get:
+ *      tags:
+ *      - warehouses&chemicals
+ *      summary: get warehouses where a chemical exists
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *            required: true
+ *      description: get all warehouses that currently have a specific chemical
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+warehousesRouter.get('/:chemicalid', (req, res) =>{
+    warehouses_chemicalsController.getAllWarehouses_byChemicalId(req.params.id).then(warehouse => {
+        res.send(warehouse);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err)
+    });
+});
+
 
 
 export default warehousesRouter;

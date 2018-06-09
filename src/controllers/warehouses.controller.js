@@ -23,9 +23,7 @@ class WarehouseController{
         let warehouseObj = new this.warehouseModel(newWarehouse);
         return warehouseObj.save();
     }
-    getAllChemicals_byWarehouseId(warehouseid){
-        return this.warehousesChemicalsModel.findOne({where:{'warehouseid': warehouseid}})
-    }
+
 }
 const warehouseController = new WarehouseController();
 export default warehouseController;
