@@ -1,4 +1,5 @@
 import warehouseModel from '../models/warehouses.model';
+import warehousesChemicalsModel from '../models/warehouses_chemicals.model';
 
 
 /**
@@ -10,6 +11,7 @@ import warehouseModel from '../models/warehouses.model';
 class WarehouseController{
     constructor(){
         this.warehouseModel = warehouseModel.getModel();
+        this.warehousesChemicalsModel = warehousesChemicalsModel.getModel();
     }
     getAllWarehouses(){
         return this.warehouseModel.all();
@@ -20,6 +22,9 @@ class WarehouseController{
     addNewWarehouse(newWarehouse){
         let warehouseObj = new this.warehouseModel(newWarehouse);
         return warehouseObj.save();
+    }
+    getAllChemicals_byWarehouseId(warehouseid){
+        return this.warehousesChemicalsModel.findOne({where:{'warehouseid': warehouseid}})
     }
 }
 const warehouseController = new WarehouseController();

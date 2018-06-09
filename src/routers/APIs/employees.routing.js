@@ -1,7 +1,7 @@
 import express from 'express';
 import employeesController from '../../controllers/employees.controller';
 import jwt from 'jsonwebtoken';
-import  {validateToken}  from '../middleware';
+import {getDecodedUserFromToken, validateToken} from '../middleware';
 /**
  * @swagger
  * definitions:
@@ -34,6 +34,38 @@ import  {validateToken}  from '../middleware';
  *
  */
 let employeesRouter = express.Router();
+
+/**
+ * @swagger
+ * /employees/getEmployee:
+ *  get:
+ *      tags:
+ *      - employees
+ *      summary: get employee data based on token
+ *      parameters:
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *            required: true
+ *      description: get employee data based on employee token
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+employeesRouter.get('/getEmployee', (req, res) =>{ //needs token
+    employeesController.getUserByEmailInToken(req).then(response =>{
+        res.send(response);
+    }, error =>{
+        res.status(404).send(error);
+    }).catch((err)=>{
+        console.log(err);
+        res.status(404);
+        res.send(err)
+    });
+});
+
 
 /**
  * @swagger

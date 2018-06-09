@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 
-
 export function validateToken(req, res, next) {
     let token = req.headers['x-access-token'];
     if(token){
@@ -20,6 +19,4 @@ export function validateToken(req, res, next) {
             message: 'No token provided.'
         });
     }
-
-
 }
