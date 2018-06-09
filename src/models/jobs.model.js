@@ -11,15 +11,14 @@ class JobsModel{
     defineModel(){
         //define user model
         this.jobsModel = this.sequalize.define('jobs', {
-            id: {
-                type: Sequelize.INTEGER,
-                primaryKey:true
+            chemicalquantity: {
+                type: Sequelize.STRING
             },
-            chemicalid: {
+            chemicaltype: {
                 type: Sequelize.STRING
             },
             warehouseid: {
-                type: Sequelize.STRING
+                type: Sequelize.INTEGER
             },
             special_status: {
                 type: Sequelize.STRING
@@ -27,7 +26,7 @@ class JobsModel{
 
         }, {timestamps:false, createdAt:false,  updatedAt: false});
     }
-    getModel(){
+    getJobsModel(){
         return this.jobsModel;
     }
 }

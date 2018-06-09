@@ -8,10 +8,11 @@ import jobsModel from '../models/jobs.model';
 class JobsController{
 
     constructor(){
-        this.jobsModel = jobsModel.getModel();
+        this.jobsModel = jobsModel.getJobsModel();
     }
     addNewJob(job){
-
+        let obj = new this.jobsModel(job);
+        return obj.save();
     }
     getAllJobs(){
         return this.jobsModel.all();
@@ -28,7 +29,9 @@ class JobsController{
     getAllJobs_bySpecialStatus(specialStatus){
         return this.jobsModel.findOne({ where : {'special_status': specialStatus }})
     }
+    editExistingJob_byId(jobid){
 
+    }
 
 }
 const jobsController = new JobsController();
