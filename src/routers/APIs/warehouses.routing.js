@@ -78,9 +78,8 @@ warehousesRouter.post('/add', validateToken, (req, res) =>{
         warehouseController.addNewWarehouse(req.body).then(warehouses => {
             res.send(warehouses);
         }).catch((err)=>{
-            console.log(err);
             res.status(404);
-            res.send('warehouses not added')
+            res.send(err)
         });
     }else{
         res.status(401);

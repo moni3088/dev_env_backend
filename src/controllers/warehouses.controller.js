@@ -14,20 +14,12 @@ class WarehouseController{
     getAllWarehouses(){
         return this.warehouseModel.all();
     }
-    findWarehouseById(id){
-        return this.warehouseModel.findOne({ where : {'id': id }})
+    findWarehouseById(warehouseid){
+        return this.warehouseModel.findOne({ where : {'id': warehouseid }})
     }
     addNewWarehouse(newWarehouse){
-        return new Promise ((resolve, reject) => {
-            // check if this warehouse already exists
-            if(this.findWarehouseById(newWarehouse.id)){
-                reject(true);
-            }else{
-                let warehouseObj = new this.warehouseModel(newWarehouse);
-                warehouseObj.save();
-                resolve(true);
-            }
-        })
+        let warehouseObj = new this.warehouseModel(newWarehouse);
+        return warehouseObj.save();
     }
 }
 const warehouseController = new WarehouseController();

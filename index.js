@@ -6,7 +6,7 @@ import {SwaggerRoute, imageRouter,
     employeesRouting, jobsRouting, jobsHistoriesRouting, chemicalsRouting, warehouseRouting} from './src/routers/index.routing';
 
 let app = express();
-const port = process.env.PORT || 7777;
+const port = process.env.PORT || 8080;
 let swagger = new Swagger();
 
 app.use(cors());
