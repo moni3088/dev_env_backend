@@ -15,9 +15,6 @@ class WarehousesModel{
                 type: Sequelize.INTEGER,
                 primaryKey:true
             },
-            chemicalid: {
-                type: Sequelize.STRING
-            },
             maxstorage:{
                 type: Sequelize.STRING
             }

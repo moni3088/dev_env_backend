@@ -87,4 +87,46 @@ warehousesRouter.post('/add', validateToken, (req, res) =>{
     }
 });
 
+
+
+/**
+ * @swagger
+ * /warehouses/{chemicalId}:
+ *  put:
+ *      tags:
+ *      - booking admin
+ *      summary: edit a particular booking
+ *      description: As admin, edit/update the transaction status of a particular booking
+ *      parameters:
+ *      - in: header
+ *        name: x-access-token
+ *        required: true
+ *      - in: path
+ *        name: bookingId
+ *        required: true
+ *      - in: body
+ *        name: body
+ *        required: true
+ *        schema:
+ *          $ref: '#/definitions/BookingStatusUpdate'
+ *      responses:
+ *          200:
+ *              description: ok
+ *
+ */
+warehousesRouter.put('/:chemicalId',validateToken, (req,res)=>{
+    if(req.decoded.admin){
+       /* warehouseController.updateBookingStatus(req).then(response => {
+            res.send(response);
+        }).catch(()=>{
+            res.status(404);
+            res.send('no event to update');
+        });*/
+    }else{
+        res.status(401);
+        res.send('You are not authorized as admin');
+    }
+});
+
+
 export default warehousesRouter;

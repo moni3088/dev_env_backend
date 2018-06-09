@@ -58,7 +58,12 @@ class EmployeeController{
                 this.findEmployee_byEmail(userData.email).then(retrievedEmployeeData =>{
                     if(retrievedEmployeeData){
                         // check for password match
-                        jwt.sign({employee: retrievedEmployeeData}, 'WhoMovedMyKeys', (error, token) =>{
+                        const payload = {
+                            //todo add roles
+                            email: retrievedEmployeeData.email,
+                            role: retrievedEmployeeData.role
+                        };
+                        jwt.sign(payload, 'WhoMovedMyKeys', (error, token) =>{
                             let response = {
                                 token: token,
                                 employee: retrievedEmployeeData
@@ -79,10 +84,6 @@ class EmployeeController{
         });
     }
 
-    hashPassword(password){
-        // needs to have smthg else than just bcrypt because bcrypt is deprecated
-        return bcrypt.hash(password, 5);
-    }
     getAllEmployees(){
         return this.employeeModel.all();
     }
@@ -91,6 +92,16 @@ class EmployeeController{
     }
     findEmployee_byId(employeeId){
         return this.employeeModel.findOne({ where : {'employeeid': employeeId }})
+    }
+    getUserByEmailInToken(req){
+        return new Promise((resolve, reject) => {
+            //Find the user base on the token
+            this.employeeModel.findOne({ email: req.params.email }).then((user)=>{
+                return resolve(user);
+            },(error)=>{
+                return reject(error);
+            });
+        });
     }
 }
 const employeeController = new EmployeeController();
