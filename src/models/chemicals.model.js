@@ -20,7 +20,7 @@ class ChemicalsModel{
             }
         }, {timestamps:false, createdAt:false,  updatedAt: false});
     }
-    getModel(){
+    getChemicalsModel(){
         return this.chemicalsModel;
     }
 }

@@ -10,11 +10,16 @@ import chemicalsModel from '../models/chemicals.model';
 class ChemicalsController{
 
     constructor(){
-        this.chemicalsModel = chemicalsModel.getModel();
+        this.chemicalsModel = chemicalsModel.getChemicalsModel();
     }
     getAllChemicals(){
         return this.chemicalsModel.all();
     }
+    addNewChemicalToTheSystem(newChem){
+        let chemicalObj = new this.chemicalsModel(newChem);
+        return chemicalObj.save();
+    }
+
 
 }
 const chemicalsController = new ChemicalsController();

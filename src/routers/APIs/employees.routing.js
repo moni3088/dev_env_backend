@@ -90,7 +90,7 @@ employeesRouter.get('/getEmployee', (req, res) =>{ //needs token
 employeesRouter.post('/signup', validateToken, (req, res) =>{
     // check if decode request is strict as employee.role as admin
     // because at signup we make token out of retrieved employee
-   if(req.decoded.employee.role === 'admin'){
+   if(req.decoded.role === 'admin'){
        employeesController.addNewEmployee(req.body).then(employee =>{
            res.send(employee);
        }).catch((err)=>{
@@ -154,7 +154,7 @@ employeesRouter.post('/login', (req, res) =>{
  *
  */
 employeesRouter.get('/all', validateToken, (req, res) =>{ //needs token
-    if(req.decoded.employee.role === 'admin'){
+    if(req.decoded.role === 'admin'){
         employeesController.getAllEmployees().then(users =>{
             res.send(users);
         }).catch((err)=>{
