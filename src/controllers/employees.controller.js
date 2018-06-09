@@ -14,16 +14,8 @@ class EmployeeController{
     }
 
     addNewEmployee(employee){
-        return new Promise ((resolve, reject) => {
-            // check if this employee already exists
-            if(this.findEmployee_byEmail(employee.email)){
-                reject(true);
-            }else{
-                let employeeObj = new this.employeeModel(employee);
-                employeeObj.save();
-                resolve(true);
-            }
-        })
+        let employeeObj = new this.employeeModel(employee);
+        return employeeObj.save();
     }
     getEmployeesByEmail(employee){
         return new Promise((resolve, reject)=>{
@@ -64,15 +56,23 @@ class EmployeeController{
             if(userData.email && userData.password){
                 // call on function which returns employee if it finds it
                 this.findEmployee_byEmail(userData.email).then(retrievedEmployeeData =>{
-                    // check for password match
-                    jwt.sign({employee: retrievedEmployeeData}, 'WhoMovedMyKeys', (error, token) =>{
-                        let response = {
-                            token: token,
-                            employee: retrievedEmployeeData
-                        };
-                        resolve(response);
-                    });
-                });
+                    if(retrievedEmployeeData){
+                        // check for password match
+                        jwt.sign({employee: retrievedEmployeeData}, 'WhoMovedMyKeys', (error, token) =>{
+                            let response = {
+                                token: token,
+                                employee: retrievedEmployeeData
+                            };
+                            resolve(response);
+                        });
+                    }else{
+                        reject('No user');
+                    }
+                }, error => {
+                    reject(error)
+                }).catch((err)=>{
+                    reject(err); // like timeout error or lost conn to db
+                })
             }else{
                 reject();
             }

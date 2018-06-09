@@ -62,9 +62,8 @@ employeesRouter.post('/signup', validateToken, (req, res) =>{
        employeesController.addNewEmployee(req.body).then(employee =>{
            res.send(employee);
        }).catch((err)=>{
-           console.log(err);
            res.status(404);
-           res.send('user not signed-up')
+           res.send(err)
        });
    }else{
        res.status(401);
@@ -91,12 +90,15 @@ employeesRouter.post('/signup', validateToken, (req, res) =>{
  *
  */
 employeesRouter.post('/login', (req, res) =>{
+    console.log('user ',req.body);
     employeesController.loginUser(req.body).then(response =>{
         res.send(response);
+    }, error =>{
+        res.status(404).send(error);
     }).catch((err)=>{
         console.log(err);
         res.status(404);
-        res.send('could not be logged in')
+        res.send(err)
     });
 });
 
@@ -124,9 +126,8 @@ employeesRouter.get('/all', validateToken, (req, res) =>{ //needs token
         employeesController.getAllEmployees().then(users =>{
             res.send(users);
         }).catch((err)=>{
-            console.log(err);
             res.status(404);
-            res.send('users not retrieved')
+            res.send(err)
         });
     }else{
         res.status(401);
