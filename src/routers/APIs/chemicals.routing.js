@@ -1,6 +1,8 @@
 import express from 'express';
 import  chemicalsController from '../../controllers/chemicals.controller';
+import warehouses_chemicalsController from '../../controllers/warehouses_chemicals.controller';
 import {validateToken} from "../middleware";
+import warehousesRouter from "./warehouses.routing";
 /**
  * @swagger
  * definitions:
@@ -14,6 +16,16 @@ import {validateToken} from "../middleware";
  *              type: string
  *          quantity:
  *              type: number
+ *  Warehouses&Chemicals:
+ *     type: object
+ *     required:
+ *     - warehouseid
+ *     - chemicalid
+ *     properties:
+ *         warehouseid:
+ *             type: integer
+ *         chemicalid:
+ *             type: integer
  *
  */
 
@@ -80,5 +92,96 @@ chemicalsRouter.post('/add', validateToken, (req, res) =>{
         res.send('no admin privilege');
     }
 });
+
+/**
+ * @swagger
+ * /chemicals/warehouses/{chemicalid}:
+ *  get:
+ *      tags:
+ *      - warehouses&chemicals
+ *      summary: get warehouses where a chemical exists
+ *      parameters:
+ *          - in: path
+ *            name: chemicalid
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *            required: true
+ *      description: get all warehouses that currently have a specific chemical
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+chemicalsRouter.get('/warehouses/:chemicalid', validateToken, (req, res) =>{
+    console.log('req.params.chemicalid ', req.params.chemicalid);
+    warehouses_chemicalsController.getAllWarehouses_byChemicalId(req.params.chemicalid).then(warehouses => {
+        res.send(warehouses);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err)
+    });
+});
+
+/**
+ * @swagger
+ * /chemicals/chem_wareh/:
+ *  get:
+ *      tags:
+ *      - warehouses&chemicals
+ *      summary: get all data
+ *      parameters:
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *            required: true
+ *      description: get all warehouses and chemicals from this table
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+chemicalsRouter.get('/chem_wareh', validateToken, (req, res) =>{
+    warehouses_chemicalsController.getAllData().then(data => {
+        res.send(data);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err)
+    });
+});
+
+/**
+ * @swagger
+ * /chemicals/chem_wareh/:
+ *  post:
+ *      tags:
+ *      - warehouses&chemicals
+ *      summary: add warehouses and chemicals to table
+ *      parameters:
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *          - in: body
+ *            name: data
+ *            schema:
+ *              $ref: '#/definitions/Warehouses&Chemicals'
+ *      description: add chemical id and their corresponding warehouses to the table
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+chemicalsRouter.post('/chem_wareh', validateToken, (req, res) =>{
+    warehouses_chemicalsController.addDataToWarehouseAndChemicals(req.body).then(warehouses => {
+        res.send(warehouses);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err)
+    });
+});
+
 
 export default chemicalsRouter;

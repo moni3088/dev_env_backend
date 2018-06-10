@@ -153,19 +153,16 @@ warehousesRouter.post('/add', validateToken, (req, res) =>{
     }
 });
 
-
-
-
 /**
  * @swagger
- * /warehouses/{warehouseid}:
+ * /warehouses/chemicals/{warehouseid}:
  *  get:
  *      tags:
  *      - warehouses&chemicals
  *      summary: get chemicals from one warehouse
  *      parameters:
  *          - in: path
- *            name: id
+ *            name: warehouseid
  *          - in: header
  *            name: x-access-token
  *            schema:
@@ -177,44 +174,14 @@ warehousesRouter.post('/add', validateToken, (req, res) =>{
  *              description: ok
  *
  */
-warehousesRouter.get('/:warehouseid', (req, res) =>{
-    warehouses_chemicalsController.getAllChemicals_byWarehouseId(req.params.id).then(chemical => {
+warehousesRouter.get('/chemicals/:warehouseid', (req, res) =>{
+    warehouses_chemicalsController.getAllChemicals_byWarehouseId(req.params.warehouseid).then(chemical => {
         res.send(chemical);
     }).catch((err)=>{
         res.status(404);
         res.send(err)
     });
 });
-/**
- * @swagger
- * /warehouses/{chemicalid}:
- *  get:
- *      tags:
- *      - warehouses&chemicals
- *      summary: get warehouses where a chemical exists
- *      parameters:
- *          - in: path
- *            name: id
- *          - in: header
- *            name: x-access-token
- *            schema:
- *              type: string
- *            required: true
- *      description: get all warehouses that currently have a specific chemical
- *      responses:
- *          201:
- *              description: ok
- *
- */
-warehousesRouter.get('/:chemicalid', (req, res) =>{
-    warehouses_chemicalsController.getAllWarehouses_byChemicalId(req.params.id).then(warehouse => {
-        res.send(warehouse);
-    }).catch((err)=>{
-        res.status(404);
-        res.send(err)
-    });
-});
-
 
 
 export default warehousesRouter;

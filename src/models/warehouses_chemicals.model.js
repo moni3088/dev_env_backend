@@ -11,10 +11,6 @@ class WarehousesChemicalsModel{
     defineModel(){
         //define user model
         this.warehouses_chemicalsModel = this.sequalize.define('warehouses_chemicals', {
-            id: {
-                type: Sequelize.INTEGER,
-                primaryKey:true
-            },
             warehouseid: {
                 type: Sequelize.INTEGER
             },
