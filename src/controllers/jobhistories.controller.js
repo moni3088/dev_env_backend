@@ -12,6 +12,10 @@ class JobHistoriesController{
     getAll_jobHistories(){
         return this.jobhistoriesModel.all();
     }
+    addJobHistory(jobHistory){
+        let obj = new this.jobhistoriesModel(jobHistory);
+        return obj.save();
+    }
 }
 const jobHistoriesController = new JobHistoriesController();
 export default jobHistoriesController;

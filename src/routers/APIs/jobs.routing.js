@@ -24,6 +24,8 @@ import chemicalsRouter from "./chemicals.routing";
  *              type: number
  *          special_status:
  *              type: string
+ *          status:
+ *              type: string
  *
  */
 
@@ -79,9 +81,12 @@ jobsRouter.get('/', (req, res) =>{ // needs token
  *
  */
 jobsRouter.post('/', validateToken, (req, res) =>{
-    jobsController.addNewJob(req.body).then(job => {
-        res.send(job);
-    }).catch((err)=>{
+    jobsController.addNewJob(req.body, req.decoded).then(created =>{
+        res.send(created);
+    },err => {
+        res.status(404);
+        res.send(err)
+    } ).catch((err)=>{
         res.status(404);
         res.send(err)
     });

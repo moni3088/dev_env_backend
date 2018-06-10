@@ -1,5 +1,5 @@
 import jobsModel from '../models/jobs.model';
-
+import  jobHistoryController from './jobhistories.controller';
 
 /**
  * We need to add a new job, get all jobs, get one job by: id, warehouseid, chemicalid, special status
@@ -10,9 +10,30 @@ class JobsController{
     constructor(){
         this.jobsModel = jobsModel.getJobsModel();
     }
-    addNewJob(job){
-        let obj = new this.jobsModel(job);
-        return obj.save();
+    addNewJob(data, decoded){
+        let obj = new this.jobsModel(data.job);
+        return new Promise((resolve, reject) => {
+            obj.save().then(job => {
+                console.log('here')
+                //add job history
+                const jobHistoryObj = {
+                    jobid: job.id,
+                    email: decoded.email,
+                    datetime: new Date(),
+                    jobstatus: data.status
+                };
+                jobHistoryController.addJobHistory(jobHistoryObj).then( done => {
+                    resolve(done);
+                }, err => {
+                    reject(err);
+                })
+            },err => {
+                reject(err);
+            }).catch((err)=>{
+                reject(err);
+            });
+        });
+
     }
     getAllJobs(){
         return this.jobsModel.all();

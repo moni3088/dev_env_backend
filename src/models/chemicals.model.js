@@ -13,10 +13,6 @@ class ChemicalsModel{
         this.chemicalsModel = this.sequalize.define('chemicals', {
             type: {
                 type: Sequelize.STRING,
-                primaryKey:true
-            },
-            quantity:{
-                type: Sequelize.STRING
             }
         }, {timestamps:false, createdAt:false,  updatedAt: false});
     }

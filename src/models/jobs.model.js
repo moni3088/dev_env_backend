@@ -14,7 +14,7 @@ class JobsModel{
             chemicalquantity: {
                 type: Sequelize.STRING
             },
-            chemicaltype: {
+            chemicalid: {
                 type: Sequelize.STRING
             },
             warehouseid: {

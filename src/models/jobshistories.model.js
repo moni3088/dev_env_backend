@@ -11,20 +11,20 @@ class JobHistoriesModel{
     defineModel(){
         //define user model
         this.jobHistoriesModel = this.sequalize.define('jobhistories', {
-            id: {
-                type: Sequelize.INTEGER,
-                primaryKey:true
-            },
             jobid: {
+                type: Sequelize.INTEGER
+            },
+            jobstatus:{
                 type: Sequelize.STRING
             },
-            status:{
+            email:{
                 type: Sequelize.STRING
             },
-            employeeid:{
-                type: Sequelize.STRING
+            datetime:{
+                type: Sequelize.DATE,
+                defaultValue: Sequelize.NOW
             }
-        }, {timestamps:true, createdAt:false,  updatedAt: false});
+        }, {createdAt:false,  updatedAt: false});
     }
     getModel(){
         return this.jobHistoriesModel;
