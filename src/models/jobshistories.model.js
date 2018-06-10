@@ -11,17 +11,13 @@ class JobHistoriesModel{
     defineModel(){
         //define user model
         this.jobHistoriesModel = this.sequalize.define('jobhistories', {
-            id: {
-                type: Sequelize.INTEGER,
-                primaryKey:true
-            },
             jobid: {
                 type: Sequelize.INTEGER
             },
             jobstatus:{
                 type: Sequelize.STRING
             },
-            employeeid:{
+            email:{
                 type: Sequelize.STRING
             },
             datetime:{
