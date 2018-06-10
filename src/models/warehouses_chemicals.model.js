@@ -16,6 +16,9 @@ class WarehousesChemicalsModel{
             },
             chemicalid:{
                 type: Sequelize.INTEGER
+            },
+            chemicalquantity:{
+                type: Sequelize.STRING
             }
         }, {timestamps:false, createdAt:false,  updatedAt: false});
     }

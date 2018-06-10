@@ -16,15 +16,19 @@ class JobHistoriesModel{
                 primaryKey:true
             },
             jobid: {
-                type: Sequelize.STRING
+                type: Sequelize.INTEGER
             },
-            status:{
+            jobstatus:{
                 type: Sequelize.STRING
             },
             employeeid:{
                 type: Sequelize.STRING
+            },
+            datetime:{
+                type: Sequelize.DATE,
+                defaultValue: Sequelize.NOW
             }
-        }, {timestamps:true, createdAt:false,  updatedAt: false});
+        }, {createdAt:false,  updatedAt: false});
     }
     getModel(){
         return this.jobHistoriesModel;
