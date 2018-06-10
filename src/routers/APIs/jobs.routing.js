@@ -24,6 +24,8 @@ import chemicalsRouter from "./chemicals.routing";
  *              type: number
  *          special_status:
  *              type: string
+ *          status:
+ *              type: string
  *
  */
 
