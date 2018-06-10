@@ -28,7 +28,7 @@ class WarehouseController{
      * @returns {Promise<warehouses_chemicals>}
      */
     getAllWarehouses_byChemicalId(chemicalid){
-        return this.warehousesChemicalsModel.findAll({where:{'chemicalid': chemicalid}});
+        return this.warehousesChemicalsModel.findAll({where:{'chemicalid': chemicalid}}); // group them by warehouse id and add chemical type instead of id because we dont have chemical id
     }
 
     /**
