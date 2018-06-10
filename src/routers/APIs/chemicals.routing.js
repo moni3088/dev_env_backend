@@ -31,6 +31,16 @@ import _ from 'lodash';
  *              type: integer
  *          chemicalquantity:
  *              type: number
+ *  WarehousesChemicalsV2:
+ *      type: object
+ *      required:
+ *      - warehouseid
+ *      - chemicalid
+ *      properties:
+ *          warehouseid:
+ *              type: integer
+ *          chemicalid:
+ *              type: integer
  */
 
 let chemicalsRouter = express.Router();
@@ -119,7 +129,6 @@ chemicalsRouter.post('/add', validateToken, (req, res) =>{
  *
  */
 chemicalsRouter.get('/warehouses/:chemicalid', validateToken, (req, res) =>{
-    console.log('req.params.chemicalid ', req.params.chemicalid);
     warehouses_chemicalsController.getAllWarehouses_byChemicalId(req.params.chemicalid).then(warehouses => {
         let groupWarehouses = _.groupBy(warehouses, 'chemicalid');
         res.send(groupWarehouses);
@@ -219,5 +228,65 @@ chemicalsRouter.put('/updateinventory/', (req,res)=>{
         res.send(err);
     });
 });
+/**
+ * @swagger
+ * /chemicals/delete/{id}:
+ *  delete:
+ *      tags:
+ *      - warehouses&chemicals
+ *      summary: delete inventory entry
+ *      description: delete the inventory entry in warehouse chemicals by id of row
+ *      parameters:
+ *      - in: header
+ *        name: x-access-token
+ *        required: true
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: number
+ *      responses:
+ *          200:
+ *              description: ok
+ */
+chemicalsRouter.delete('/delete/:id', validateToken, (req, res)=>{
+    warehouses_chemicalsController.deleteInventory_byId(req.params.id).then(response => {
+        res.send(response);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err);
+    });
+});
+
+/*/!**
+ * @swagger
+ * /chemicals/delete/{chemicalid}/{warehouseid}:
+ *  delete:
+ *      tags:
+ *      - warehouses&chemicals
+ *      summary: delete inventory entry
+ *      description: delete the inventory entry in warehouse chemicals by chemical and warehouse id data
+ *      parameters:
+ *      - in: header
+ *        name: x-access-token
+ *        required: true
+ *      - in: body
+ *        name: inventory
+ *        schema:
+ *           $ref: '#/definitions/WarehousesChemicalsV2'
+ *      responses:
+ *          200:
+ *              description: ok
+ *!/
+chemicalsRouter.delete('/delete/:chemicalid/:warehouseid', validateToken, (req, res)=>{
+    console.log('id: ', req.params.chemicalid, req.params.warehouseid);
+    warehouses_chemicalsController.deleteInventory_byChemicalWarehouseIds(req.params).then(response => {
+        res.send(response);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err);
+    });
+})*/
+
 
 export default chemicalsRouter;
