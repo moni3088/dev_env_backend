@@ -43,7 +43,6 @@ class WarehouseController{
     }
 
     updateInventory(data){
-        console.log('data is: ', data.chemicalid, data.warehouseid, data.chemicalquantity);
         return this.warehousesChemicalsModel.update({
             chemicalquantity: data.chemicalquantity,
         }, {
@@ -52,6 +51,13 @@ class WarehouseController{
                 chemicalid: data.chemicalid
             }
         });
+    }
+
+    deleteInventory_byId(dataid){
+        return this.warehousesChemicalsModel.destroy({where:{'id':dataid}});
+    }
+    deleteInventory_byChemicalWarehouseIds(dataids){
+        return this.warehousesChemicalsModel.destroy({where:{'chemicalid':dataids.chemicalid, 'warehouseid':dataids.warehouseid}});
     }
 }
 const warehouseController = new WarehouseController();

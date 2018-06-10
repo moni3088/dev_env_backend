@@ -14,7 +14,6 @@ class JobsController{
         let obj = new this.jobsModel(data.job);
         return new Promise((resolve, reject) => {
             obj.save().then(job => {
-                console.log('here')
                 //add job history
                 const jobHistoryObj = {
                     jobid: job.id,

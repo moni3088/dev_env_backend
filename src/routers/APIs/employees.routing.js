@@ -54,16 +54,13 @@ let employeesRouter = express.Router();
  *              description: ok
  *
  */
-employeesRouter.get('/getEmployee', (req, res) =>{ //needs token
+employeesRouter.get('/getEmployee', validateToken, (req, res) =>{
     employeesController.getUserByEmailInToken(req).then(response =>{
         res.send(response);
-    }, error =>{
-        res.status(404).send(error);
-    }).catch((err)=>{
-        console.log(err);
-        res.status(404);
-        res.send(err)
-    });
+    }, error => {
+        res.status(400);
+        res.send(error);
+    })
 });
 
 
@@ -122,13 +119,11 @@ employeesRouter.post('/signup', validateToken, (req, res) =>{
  *
  */
 employeesRouter.post('/login', (req, res) =>{
-    console.log('user ',req.body);
     employeesController.loginUser(req.body).then(response =>{
         res.send(response);
     }, error =>{
         res.status(404).send(error);
     }).catch((err)=>{
-        console.log(err);
         res.status(404);
         res.send(err)
     });
