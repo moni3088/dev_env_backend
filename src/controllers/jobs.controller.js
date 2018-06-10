@@ -15,7 +15,7 @@ class JobsController{
         return new Promise((resolve, reject) => {
             obj.save().then(job => {
                 //add job history
-                const jobHistoryObj = {
+                let jobHistoryObj = {
                     jobid: job.id,
                     email: decoded.email,
                     datetime: new Date(),
@@ -27,8 +27,6 @@ class JobsController{
                     reject(err);
                 })
             },err => {
-                reject(err);
-            }).catch((err)=>{
                 reject(err);
             });
         });

@@ -94,7 +94,7 @@ chemicalsRouter.get('/all', validateToken, (req, res) =>{
  *
  */
 chemicalsRouter.post('/add', validateToken, (req, res) =>{
-    if(req.decoded.role === 'admin'){
+    if(req.body.decoded.role === 'admin'){
         chemicalsController.addNewChemicalToTheSystem(req.body).then(chemical => {
             res.send(chemical);
         }).catch((err)=>{

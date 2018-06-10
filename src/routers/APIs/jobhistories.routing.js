@@ -45,7 +45,7 @@ let jobsHistoriesRouter = express.Router();
  *
  */
 jobsHistoriesRouter.get('/all', validateToken, (req, res) =>{ //needs token
-    jobHistoriesController.getAll_jobHistories().then(history => {
+    jobsHistoriesController.getAll_jobHistories().then(history => {
         res.send(history);
     }, err => {
         res.status(404).send(err);
