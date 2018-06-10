@@ -10,7 +10,7 @@ class JobHistoriesController{
         this.jobhistoriesModel = jobhistoriesModel.getModel();
     }
     getAll_jobHistories(){
-        // return this.jobhistoriesModel.all();
+        return this.jobhistoriesModel.all();
     }
     addJobHistory(jobHistory){
         let obj = new this.jobhistoriesModel(jobHistory);

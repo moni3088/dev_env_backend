@@ -1,5 +1,5 @@
 import express from 'express';
-import  jobsHistories_router from '../../controllers/jobhistories.controller';
+import  jobHistoriesController from '../../controllers/jobhistories.controller';
 import {validateToken} from "../middleware";
 /**
  * @swagger
@@ -44,7 +44,14 @@ let jobsHistoriesRouter = express.Router();
  *              description: ok
  *
  */
-jobsHistoriesRouter.get('/all', (req, res) =>{ //needs token
+jobsHistoriesRouter.get('/all', validateToken, (req, res) =>{ //needs token
+    jobHistoriesController.getAll_jobHistories().then(history => {
+        res.send(history);
+    }, err => {
+        res.status(404).send(err);
+    }).catch(err => {
+        res.status(500).send(err);
+    })
     //TO DO return all job history data if token validates that this is admin
 });
 
