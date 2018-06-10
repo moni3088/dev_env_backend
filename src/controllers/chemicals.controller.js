@@ -20,7 +20,6 @@ class ChemicalsController{
         return chemicalObj.save();
     }
 
-
 }
 const chemicalsController = new ChemicalsController();
 export default chemicalsController;

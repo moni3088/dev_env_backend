@@ -16,17 +16,20 @@ import warehousesRouter from "./warehouses.routing";
  *              type: string
  *          quantity:
  *              type: number
- *  Warehouses&Chemicals:
- *     type: object
- *     required:
- *     - warehouseid
- *     - chemicalid
- *     properties:
- *         warehouseid:
- *             type: integer
- *         chemicalid:
- *             type: integer
  *
+ *  WarehousesChemicals:
+ *      type: object
+ *      required:
+ *      - warehouseid
+ *      - chemicalid
+ *      - chemicalquantity
+ *      properties:
+ *          warehouseid:
+ *              type: integer
+ *          chemicalid:
+ *              type: integer
+ *          chemicalquantity:
+ *              type: number
  */
 
 let chemicalsRouter = express.Router();
@@ -126,7 +129,7 @@ chemicalsRouter.get('/warehouses/:chemicalid', validateToken, (req, res) =>{
 
 /**
  * @swagger
- * /chemicals/chem_wareh/:
+ * /chemicals/chem_wareh/{warehouseid}/{chemicalid}:
  *  get:
  *      tags:
  *      - warehouses&chemicals
@@ -183,5 +186,35 @@ chemicalsRouter.post('/chem_wareh', validateToken, (req, res) =>{
     });
 });
 
+/**
+ * @swagger
+ * /chemicals/updateinventory/:
+ *  put:
+ *      tags:
+ *      - warehouses&chemicals
+ *      summary: edit chemical quantity
+ *      parameters:
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *          - in: body
+ *            name: data
+ *            schema:
+ *              $ref: '#/definitions/WarehousesChemicals'
+ *      description: edit chemical quantity so it reflects the total/overall situation of the quantity in that warehouse
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+chemicalsRouter.put('/updateinventory/', (req,res)=>{
+    warehouses_chemicalsController.updateInventory(req.body).then(response => {
+        res.send(response);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err);
+    });
+});
 
 export default chemicalsRouter;
