@@ -16,13 +16,13 @@ import chemicalsRouter from "./chemicals.routing";
  *      - chemicalquantity
  *      - status
  *      properties:
- *          warehouseId:
- *              type: string
+ *          warehouseid:
+ *              type: number
  *          chemicaltype:
  *              type: string
  *          chemicalquantity:
  *              type: number
- *          specialStatus:
+ *          special_status:
  *              type: string
  *
  */
