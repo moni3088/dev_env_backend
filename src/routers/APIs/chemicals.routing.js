@@ -2,7 +2,8 @@ import express from 'express';
 import  chemicalsController from '../../controllers/chemicals.controller';
 import warehouses_chemicalsController from '../../controllers/warehouses_chemicals.controller';
 import {validateToken} from "../middleware";
-import warehousesRouter from "./warehouses.routing";
+import _ from 'lodash';
+
 /**
  * @swagger
  * definitions:
@@ -120,7 +121,8 @@ chemicalsRouter.post('/add', validateToken, (req, res) =>{
 chemicalsRouter.get('/warehouses/:chemicalid', validateToken, (req, res) =>{
     console.log('req.params.chemicalid ', req.params.chemicalid);
     warehouses_chemicalsController.getAllWarehouses_byChemicalId(req.params.chemicalid).then(warehouses => {
-        res.send(warehouses);
+        let groupWarehouses = _.groupBy(warehouses, 'chemicalid');
+        res.send(groupWarehouses);
     }).catch((err)=>{
         res.status(404);
         res.send(err)
@@ -129,7 +131,7 @@ chemicalsRouter.get('/warehouses/:chemicalid', validateToken, (req, res) =>{
 
 /**
  * @swagger
- * /chemicals/chem_wareh/{warehouseid}/{chemicalid}:
+ * /chemicals/chem_wareh/:
  *  get:
  *      tags:
  *      - warehouses&chemicals
@@ -148,7 +150,8 @@ chemicalsRouter.get('/warehouses/:chemicalid', validateToken, (req, res) =>{
  */
 chemicalsRouter.get('/chem_wareh', validateToken, (req, res) =>{
     warehouses_chemicalsController.getAllData().then(data => {
-        res.send(data);
+        let groupWarehouses = _.groupBy(data, 'warehouseid');
+        res.send(groupWarehouses);
     }).catch((err)=>{
         res.status(404);
         res.send(err)
