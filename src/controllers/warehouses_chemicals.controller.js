@@ -41,6 +41,18 @@ class WarehouseController{
         let obj = new this.warehousesChemicalsModel(data);
         return obj.save();
     }
+
+    updateInventory(data){
+        console.log('data is: ', data.chemicalid, data.warehouseid, data.chemicalquantity);
+        return this.warehousesChemicalsModel.update({
+            chemicalquantity: data.chemicalquantity,
+        }, {
+            where: {
+                warehouseid: data.warehouseid,
+                chemicalid: data.chemicalid
+            }
+        });
+    }
 }
 const warehouseController = new WarehouseController();
 export default warehouseController;

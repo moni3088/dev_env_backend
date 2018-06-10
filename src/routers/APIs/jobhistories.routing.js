@@ -1,5 +1,5 @@
 import express from 'express';
-import  jobHistoriesController from '../../controllers/jobhistories.controller';
+import  jobsHistoriesController from '../../controllers/jobhistories.controller';
 import {validateToken} from "../middleware";
 /**
  * @swagger
@@ -54,30 +54,5 @@ jobsHistoriesRouter.get('/all', validateToken, (req, res) =>{ //needs token
     })
     //TO DO return all job history data if token validates that this is admin
 });
-
-// /**
-//  * @swagger
-//  * /jobHistories:
-//  *  post:
-//  *      tags:
-//  *      - jobHistory
-//  *      summary: post history
-//  *      parameters:
-//  *          - in: header
-//  *            name: x-access-token
-//  *            schema:
-//  *              type: string
-//  *            required: true
-//  *      description: create job history
-//  *      responses:
-//  *          201:
-//  *              description: ok
-//  *
-//  */
-// jobsHistoriesRouter.post('/', validateToken, (req, res) => {
-//
-//     console.log('you are posting job');
-//
-// });
 
 export default jobsHistoriesRouter;
