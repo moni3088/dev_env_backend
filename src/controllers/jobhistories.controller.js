@@ -17,6 +17,9 @@ class JobHistoriesController{
         return obj.save();
     }
     updateJobHistoryStatus(data){
+        // update jobhistory record
+        // if status == done/approved save chemicals in wh_chem
+        // then return res to client
         return this.jobhistoriesModel.update({
             chemicalquantity: data.chemicalquantity,
         }, {
