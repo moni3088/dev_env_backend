@@ -14,9 +14,8 @@ class JobsController{
         let obj = new this.jobsModel(data.job);
         return new Promise((resolve, reject) => {
             obj.save().then(job => {
-                console.log('here')
                 //add job history
-                const jobHistoryObj = {
+                let jobHistoryObj = {
                     jobid: job.id,
                     email: decoded.email,
                     datetime: new Date(),
@@ -29,8 +28,6 @@ class JobsController{
                 })
             },err => {
                 reject(err);
-            }).catch((err)=>{
-                reject(err);
             });
         });
 
@@ -38,21 +35,19 @@ class JobsController{
     getAllJobs(){
         return this.jobsModel.all();
     }
-    getAllJobs_byJobId(jobId){
-        return this.jobsModel.findOne({ where : {'jobid': jobId }})
+    getJob_byJobId(id){
+        return this.jobsModel.findAll({ where : {'id': id }})
     }
-    getAllJobs_byChemicalId(chemicalId){
-        return this.jobsModel.findOne({ where : {'chemicalid': chemicalId }})
+    getJob_byChemicalId(chemicalId){
+        return this.jobsModel.findAll({ where : {'chemicalid': chemicalId }})
     }
-    getAllJobs_byWarehouseId(warehouseId){
-        return this.jobsModel.findOne({ where : {'warehouseid': warehouseId }})
+    getJob_byWarehouseId(warehouseId){
+        return this.jobsModel.findAll({ where : {'warehouseid': warehouseId }})
     }
-    getAllJobs_bySpecialStatus(specialStatus){
-        return this.jobsModel.findOne({ where : {'special_status': specialStatus }})
+    getJob_bySpecialStatus(specialStatus){
+        return this.jobsModel.findAll({ where : {'special_status': specialStatus }})
     }
-    editExistingJob_byId(jobid){
 
-    }
 
 }
 const jobsController = new JobsController();

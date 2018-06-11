@@ -54,16 +54,13 @@ let employeesRouter = express.Router();
  *              description: ok
  *
  */
-employeesRouter.get('/getEmployee', (req, res) =>{ //needs token
+employeesRouter.get('/getEmployee', validateToken, (req, res) =>{
     employeesController.getUserByEmailInToken(req).then(response =>{
         res.send(response);
-    }, error =>{
-        res.status(404).send(error);
-    }).catch((err)=>{
-        console.log(err);
-        res.status(404);
-        res.send(err)
-    });
+    }, error => {
+        res.status(400);
+        res.send(error);
+    })
 });
 
 
@@ -90,7 +87,7 @@ employeesRouter.get('/getEmployee', (req, res) =>{ //needs token
 employeesRouter.post('/signup', validateToken, (req, res) =>{
     // check if decode request is strict as employee.role as admin
     // because at signup we make token out of retrieved employee
-   if(req.decoded.role === 'admin'){
+   if(req.body.decoded.role === 'admin'){
        employeesController.addNewEmployee(req.body).then(employee =>{
            res.send(employee);
        }).catch((err)=>{
@@ -122,13 +119,11 @@ employeesRouter.post('/signup', validateToken, (req, res) =>{
  *
  */
 employeesRouter.post('/login', (req, res) =>{
-    console.log('user ',req.body);
     employeesController.loginUser(req.body).then(response =>{
         res.send(response);
     }, error =>{
         res.status(404).send(error);
     }).catch((err)=>{
-        console.log(err);
         res.status(404);
         res.send(err)
     });
@@ -154,7 +149,7 @@ employeesRouter.post('/login', (req, res) =>{
  *
  */
 employeesRouter.get('/all', validateToken, (req, res) =>{ //needs token
-    if(req.decoded.role === 'admin'){
+    if(req.body.decoded.role === 'admin'){
         employeesController.getAllEmployees().then(users =>{
             res.send(users);
         }).catch((err)=>{
@@ -276,7 +271,7 @@ employeesRouter.get('/user/:email/',validateToken, (req, res)=>{
         email: req.params.email,
     };
     employeesController.getUser(obj).then((user)=>{
-        if(req.decoded.email === obj.email || req.decoded.admin){
+        if(req.body.decoded.role === obj.email || req.decoded.admin){
             res.send(user);
         }else{
             res.status(401);

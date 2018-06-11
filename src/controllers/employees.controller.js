@@ -54,22 +54,27 @@ class EmployeeController{
         return new Promise((resolve, reject)=>{
             // check if there is user data which is not null or empty string
             if(userData.email && userData.password){
+                console.log(userData.email);
                 // call on function which returns employee if it finds it
                 this.findEmployee_byEmail(userData.email).then(retrievedEmployeeData =>{
+                    console.log('retrieve ', retrievedEmployeeData);
                     if(retrievedEmployeeData){
                         // check for password match
-                        const payload = {
+                        let payload = {
                             //todo add roles
-                            email: retrievedEmployeeData.email,
-                            role: retrievedEmployeeData.role
+                            email:retrievedEmployeeData.email,
+                            role:retrievedEmployeeData.role
                         };
-                        jwt.sign(payload, 'WhoMovedMyKeys', (error, token) =>{
-                            let response = {
-                                token: token,
-                                employee: retrievedEmployeeData
-                            };
-                            resolve(response);
-                        });
+                        console.log('payload ', payload);
+                        let token = jwt.sign(payload, 'WhoMovedMyKeys', { expiresIn: Date.now()+5000 } );
+                        console.log('Token ',token);
+                        let response = {
+                            token: token,
+                            employee: retrievedEmployeeData
+                        };
+
+                        resolve(response);
+
                     }else{
                         reject('No user');
                     }
@@ -96,7 +101,7 @@ class EmployeeController{
     getUserByEmailInToken(req){
         return new Promise((resolve, reject) => {
             //Find the user base on the token
-            this.employeeModel.findOne({ email: req.params.email }).then((user)=>{
+            this.employeeModel.findAll({where:{'email':req.body.decoded.email }}).then((user)=>{
                 return resolve(user);
             },(error)=>{
                 return reject(error);

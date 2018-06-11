@@ -139,8 +139,7 @@ warehousesRouter.get('/:warehouseid', validateToken, (req, res) =>{
  *
  */
 warehousesRouter.post('/add', validateToken, (req, res) =>{
-    if(req.decoded.role === 'admin'){
-        console.log('Warehouse is: ', req.body);
+    if(req.body.decoded.role === 'admin'){
         warehouseController.addNewWarehouse(req.body).then(warehouses => {
             res.send(warehouses);
         }).catch((err)=>{
