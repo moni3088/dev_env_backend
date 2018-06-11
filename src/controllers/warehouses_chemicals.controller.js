@@ -1,5 +1,6 @@
 import warehousesChemicalsModel from '../models/warehouses_chemicals.model';
 import chemicalsModel from "../models/chemicals.model";
+import _ from 'lodash';
 
 class WarehouseController{
     constructor(){
@@ -11,7 +12,31 @@ class WarehouseController{
      * @returns {*}
      */
     getAllData(){
-        return this.warehousesChemicalsModel.findAll({include: [{model: this.chemicalsModel} ]});
+        return new Promise((resolve, reject)=>{
+            this.warehousesChemicalsModel.findAll({include: [{model: this.chemicalsModel} ]}).then(data => {
+                let map = data.map((obj) => {return obj.toJSON()})
+                let groupWarehouses = _.groupBy(map, 'warehouseid');
+                //loop through obj
+                for(let prop in groupWarehouses) {
+                    if (groupWarehouses.hasOwnProperty(prop)){
+                        //loop through chemical
+                        let takenSpace = 0;
+                        for(let i in groupWarehouses[prop]){
+                            takenSpace = takenSpace + groupWarehouses[prop][i].chemicalquantity;
+                        }
+                        groupWarehouses[prop].push({takenSpace: takenSpace});
+
+                    }
+                }
+                console.log(groupWarehouses);
+                resolve(groupWarehouses);
+
+            }).catch((err)=>{
+                reject(err);
+
+            });
+        });
+
     }
     /**
      * Retrieve all the chemicals where the warehouse with id x exists
