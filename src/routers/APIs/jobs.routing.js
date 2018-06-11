@@ -1,10 +1,7 @@
 import express from 'express';
 import jobsController from '../../controllers/jobs.controller';
-import jwt from 'jsonwebtoken';
 import  {validateToken}  from '../middleware';
-import employeesRouter from "./employees.routing";
-import warehouses_chemicalsController from "../../controllers/warehouses_chemicals.controller";
-import chemicalsRouter from "./chemicals.routing";
+
 /**
  * @swagger
  * definitions:
@@ -53,6 +50,35 @@ let jobsRouter = express.Router();
 jobsRouter.get('/', (req, res) =>{ // needs token
     jobsController.getAllJobs().then(jobs =>{
         res.send(jobs);
+    }).catch((err)=>{
+        res.status(404);
+        res.send(err)
+    });
+});
+/**
+ * @swagger
+ * /jobs/{id}:
+ *  get:
+ *      tags:
+ *      - jobs
+ *      summary: get job by id
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *            required: true
+ *      description: get a job based on its id
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+jobsRouter.get('/:id', validateToken, (req, res) =>{
+    jobsController.getJob_byJobId(req.params.id).then(job => {
+        res.send(job);
     }).catch((err)=>{
         res.status(404);
         res.send(err)

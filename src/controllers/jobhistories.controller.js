@@ -16,6 +16,18 @@ class JobHistoriesController{
         let obj = new this.jobhistoriesModel(jobHistory);
         return obj.save();
     }
+    updateJobHistoryStatus(data){
+        return this.jobhistoriesModel.update({
+            chemicalquantity: data.chemicalquantity,
+        }, {
+            where: {
+                warehouseid: data.warehouseid,
+                chemicalid: data.chemicalid
+            }
+        });
+    }
+
+
 }
 const jobHistoriesController = new JobHistoriesController();
 export default jobHistoriesController;

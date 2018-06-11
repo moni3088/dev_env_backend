@@ -165,6 +165,7 @@ chemicalsRouter.get('/chem_wareh', validateToken, (req, res) =>{
         res.status(404);
         res.send(err)
     });
+
 });
 
 /**
@@ -257,36 +258,6 @@ chemicalsRouter.delete('/delete/:id', validateToken, (req, res)=>{
         res.send(err);
     });
 });
-
-/*/!**
- * @swagger
- * /chemicals/delete/{chemicalid}/{warehouseid}:
- *  delete:
- *      tags:
- *      - warehouses&chemicals
- *      summary: delete inventory entry
- *      description: delete the inventory entry in warehouse chemicals by chemical and warehouse id data
- *      parameters:
- *      - in: header
- *        name: x-access-token
- *        required: true
- *      - in: body
- *        name: inventory
- *        schema:
- *           $ref: '#/definitions/WarehousesChemicalsV2'
- *      responses:
- *          200:
- *              description: ok
- *!/
-chemicalsRouter.delete('/delete/:chemicalid/:warehouseid', validateToken, (req, res)=>{
-    console.log('id: ', req.params.chemicalid, req.params.warehouseid);
-    warehouses_chemicalsController.deleteInventory_byChemicalWarehouseIds(req.params).then(response => {
-        res.send(response);
-    }).catch((err)=>{
-        res.status(404);
-        res.send(err);
-    });
-})*/
 
 
 export default chemicalsRouter;

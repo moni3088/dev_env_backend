@@ -17,7 +17,7 @@ class WarehouseController{
         return this.warehouseModel.all();
     }
     findWarehouseById(warehouseid){
-        return this.warehouseModel.findOne({ where : {'id': warehouseid }})
+        return this.warehouseModel.findAll({ where : {'id': warehouseid }})
     }
     addNewWarehouse(newWarehouse){
         let warehouseObj = new this.warehouseModel(newWarehouse);
