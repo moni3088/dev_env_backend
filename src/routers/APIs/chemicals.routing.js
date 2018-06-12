@@ -159,12 +159,15 @@ chemicalsRouter.get('/warehouses/:chemicalid', validateToken, (req, res) =>{
  */
 chemicalsRouter.get('/chem_wareh', validateToken, (req, res) =>{
     warehouses_chemicalsController.getAllData().then(data => {
-        let groupWarehouses = _.groupBy(data, 'warehouseid');
-        res.send(groupWarehouses);
+        res.send(data);
+    }, err => {
+        res.status(404);
+        res.send(err)
     }).catch((err)=>{
         res.status(404);
         res.send(err)
     });
+
 
 });
 
