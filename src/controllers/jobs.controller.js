@@ -18,7 +18,6 @@ class JobsController{
                 let jobHistoryObj = {
                     jobid: job.id,
                     email: decoded.email,
-                    datetime: new Date(),
                     jobstatus: data.status
                 };
                 jobHistoryController.addJobHistory(jobHistoryObj).then( done => {

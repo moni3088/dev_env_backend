@@ -13,7 +13,13 @@ class JobHistoriesController{
         return this.jobhistoriesModel.all();
     }
     addJobHistory(jobHistory){
-        let obj = new this.jobhistoriesModel(jobHistory);
+        let obsToSave = {
+                jobid: jobHistory.id,
+                email: jobHistory.email,
+                datetime: new Date(),
+                jobstatus: jobHistory.status
+        };
+        let obj = new this.jobhistoriesModel(obsToSave);
         return obj.save();
     }
     updateJobHistoryStatus(data){
@@ -29,7 +35,6 @@ class JobHistoriesController{
             }
         });
     }
-
 
 }
 const jobHistoriesController = new JobHistoriesController();
