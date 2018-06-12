@@ -20,6 +20,7 @@ class JobsController{
                     email: decoded.email,
                     jobstatus: data.status
                 };
+                console.log('Adding job backend ', jobHistoryObj);
                 jobHistoryController.addJobHistory(jobHistoryObj).then( done => {
                     resolve(done);
                 }, err => {
