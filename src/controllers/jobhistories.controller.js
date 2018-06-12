@@ -13,20 +13,15 @@ class JobHistoriesController{
         return this.jobhistoriesModel.all();
     }
     addJobHistory(jobHistory){
-        let obj = new this.jobhistoriesModel(jobHistory);
+        let obsToSave = {
+                jobid: jobHistory.id,
+                email: jobHistory.email,
+                datetime: new Date(),
+                jobstatus: jobHistory.status
+        };
+        let obj = new this.jobhistoriesModel(obsToSave);
         return obj.save();
     }
-    updateJobHistoryStatus(data){
-        return this.jobhistoriesModel.update({
-            chemicalquantity: data.chemicalquantity,
-        }, {
-            where: {
-                warehouseid: data.warehouseid,
-                chemicalid: data.chemicalid
-            }
-        });
-    }
-
 
 }
 const jobHistoriesController = new JobHistoriesController();
