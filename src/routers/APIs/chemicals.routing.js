@@ -186,7 +186,7 @@ chemicalsRouter.get('/chem_wareh', validateToken, (req, res) =>{
  *          - in: body
  *            name: data
  *            schema:
- *              $ref: '#/definitions/Warehouses&Chemicals'
+ *              $ref: '#/definitions/WarehousesChemicals'
  *      description: add chemical id and their corresponding warehouses to the table
  *      responses:
  *          201:

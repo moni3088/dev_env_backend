@@ -18,9 +18,9 @@ class JobsController{
                 let jobHistoryObj = {
                     jobid: job.id,
                     email: decoded.email,
-                    datetime: new Date(),
                     jobstatus: data.status
                 };
+                console.log('Adding job backend ', jobHistoryObj);
                 jobHistoryController.addJobHistory(jobHistoryObj).then( done => {
                     resolve(done);
                 }, err => {

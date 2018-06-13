@@ -20,6 +20,16 @@ import {validateToken} from "../middleware";
  *              type: string
  *          timestamp:
  *              type: string
+ *  JobHistoryUpdate:
+ *      type: object
+ *      required:
+ *      - id
+ *      - status
+ *      properties:
+ *          id:
+ *              type: string
+ *          status:
+ *              type: string
  *
  */
 
@@ -53,6 +63,43 @@ jobsHistoriesRouter.get('/all', validateToken, (req, res) =>{ //needs token
         res.status(500).send(err);
     })
     //TO DO return all job history data if token validates that this is admin
+});
+
+/**
+ * @swagger
+ * /jobHistories/update:
+ *  post:
+ *      tags:
+ *      - jobHistory
+ *      summary: add job history
+ *      parameters:
+ *          - in: header
+ *            name: x-access-token
+ *            schema:
+ *              type: string
+ *          - in: body
+ *            name: data
+ *            schema:
+ *              $ref: '#/definitions/JobHistoryUpdate'
+ *      description: add job history to be used only when an existing job gets a new status
+ *      responses:
+ *          201:
+ *              description: ok
+ *
+ */
+jobsHistoriesRouter.post('/update', validateToken, (req, res) =>{
+    let object = {
+        id: req.body.id,
+        email: req.body.decoded.email,
+        status: req.body.status
+    };
+    jobsHistoriesController.addJobHistory(object).then(created =>{
+        console.log('Created response: ', created);
+        res.send(created);
+    },err => {
+        res.status(404);
+        res.send(err)
+    })
 });
 
 export default jobsHistoriesRouter;
